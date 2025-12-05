@@ -170,6 +170,53 @@ Different from:
 
 # Quality Assurance Processes
 
-# Verification & Validation (v&V)
+# Verification & Validation (V&V)
 
 # Specification
+
+## Lecture 7 - Automated BVA
+### Motivation
+Boundary Value Analysis (BVA) = **test near input boundaries**, because bugs often happen at borders.
+But traditional BVA has **problems**:
+- Boundaries are **not formally defined**.
+- Hard to automate.
+- Works mostly for **numeric** inputs.
+The paper proposes a **general**, **black-box**, **automated BVA technique** using **information theory** and **program derivatives**.
+
+### Relationship to Partition Analysis (PA)
+Partition Analysis (划分分析) divides the input domain into sub-domains where behavior should be similar.
+
+Boundary = border between partitions
+
+Developers often create bugs at these boundaries -> BVA focuses on testing such points.
+
+### Problem: Modern Inputs Are Complex
+Inputs are not always numbers. They may be:
+- strings
+- objects
+- graphs
+- arrays
+- nested structures
+--> It's unclear how to define a "small change" in these domains.
+--> Hard to define boundaries.
+
+### Key Idea: Use Difference in Outputs to Detect Boundaries
+Inspired by calculus:
+Derivative mearsured how sensitive output is to a small change in input.
+Program Derivative:
+PD(a) = (distance between outputs of a & b) / (distance between inputs a & b)
+Where b is the closest neighbor input io a,
+If a samll input change --> Large output change --> near boundary
+
+### Generalizing "distance"
+Inputs & outputs are not always numeric.
+So subtraction (a - b) doesn't work.
+Solution: use general distance functions
+Most general: Normalized Information Distance (NID)
+~ difference measured through information content.
+
+But NID uses Kolmogorov complexity -> not computable.
+
+Practical version: Normalized Compression Distance (NCD)
+--> Use compression algorithms to approximate complexity.
+Why useful: any data type can be converted to a string --> compressed --> compared
